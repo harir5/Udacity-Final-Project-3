@@ -7,5 +7,6 @@ jobs:
     steps:
       - run: echo hello
 workflows:
-  jobs:
-    -print_hello
+  default:
+    jobs:
+      -print_hello
