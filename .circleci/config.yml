@@ -8,5 +8,4 @@ jobs:
       - run: echo hello
 workflows:
   jobs:
-    run:
-      -print_hello
+    -print_hello
