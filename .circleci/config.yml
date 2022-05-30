@@ -144,10 +144,9 @@ jobs:
           root: ~/project/.circleci/ansible
           paths:
             - .
-       - run:
+      - run:
           name: Print file contents
           command: cat ~/project/.circleci/ansible/inventory.txt
-        
       - destroy-environment
   configure-infrastructure: 
     docker:
