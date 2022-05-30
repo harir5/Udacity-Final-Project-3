@@ -160,9 +160,8 @@ jobs:
       - run:
           name: Configure server
           command: |
-            cd .circleci/ansible
-            echo pwd
-            ansible-playbook -i inventory.txt configure-server.yml
+            pwd
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/configure-server.yml
       - destroy-environment
 workflows:
   default:
