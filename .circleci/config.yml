@@ -154,6 +154,9 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["06:30:6f:96:25:49:00:aa:58:16:ed:18:f4:cb:02:09"] # SSH Key added
       - run:
+        - attach_workspace:
+            at: ~/project/.circleci/ansible
+      - run:
           name: Install dependencies
           command: |
             apk add --update ansible 
