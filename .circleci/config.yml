@@ -48,3 +48,4 @@ workflows:
     jobs:
       - print_hello
       - build-frontend
+      - build-backend
