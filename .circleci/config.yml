@@ -9,7 +9,22 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+  build-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+     - checkout
+     - run:
+        name: "Run front end commands to build front end"
+        command: 
+          cd frontend
+          npm install
+          npm run build
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build       
 workflows:
   default:
     jobs:
       - print_hello
+      - build-frontend
