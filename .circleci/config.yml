@@ -189,14 +189,14 @@ jobs:
       - destroy-environment
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            yum -y install nodejs
-            yum -y install tar gzip
+            apt-get update
+            apt -y install awscli
       - attach_workspace:
           at: ~/
       - run:
@@ -208,8 +208,8 @@ jobs:
             echo "${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            echo API_URL="http://${BACKEND_IP}:3030" >> .env
-            cat .env
+            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            cat frontend/.env
       - run:
           name: Deploy frontend objects
           command: |
