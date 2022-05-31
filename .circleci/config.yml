@@ -10,10 +10,10 @@ commands:
             aws cloudformation delete-stack --stack-name udacity-project-3-backend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udacity-project-3-frontend-${CIRCLE_WORKFLOW_ID:0:7}
   revert-migrations:
-    description: evert the last migration.
+    description: Revert the last migration.
     steps:
       - run:
-          name: Destroy environments
+          name: Revert Migrations
           when: on_fail
           command: |
              SUCCESS=$(curl --insecure  https://kvdb.io/Dyv7U1kyD5sFjvcoMyvmem/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
