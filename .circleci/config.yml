@@ -246,7 +246,6 @@ jobs:
             echo "$PWD"
             npm i
             npm run build
-            cp package* ./dist
             cd ..
             echo "$PWD"
             tar -C backend -czvf artifact.tar.gz .
