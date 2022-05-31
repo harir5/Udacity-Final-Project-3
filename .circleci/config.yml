@@ -294,6 +294,7 @@ jobs:
               return 1
             fi
       - destroy-environment
+
 workflows:
   default:
     jobs:
