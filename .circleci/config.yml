@@ -131,6 +131,7 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
+          echo [web] > .circleci/ansible/inventory.txt
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text >> .circleci/ansible/inventory.txt
@@ -142,9 +143,6 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - run:
-          name: Print file contents
-          command: cat ~/project/.circleci/ansible/inventory.txt
       - destroy-environment
   configure-infrastructure: 
     docker:
@@ -154,16 +152,19 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["06:30:6f:96:25:49:00:aa:58:16:ed:18:f4:cb:02:09"] # SSH Key added
       - attach_workspace:
-            at: ~/project/.circleci/ansible
+          at: ~/
       - run:
           name: Install dependencies
           command: |
+           
+            apk add awscli
             apk add --update ansible 
       - run:
           name: Configure server
           command: |
-            pwd
-            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/configure-server.yml
+            cd .circleci/ansible/  
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment
 workflows:
   default:
