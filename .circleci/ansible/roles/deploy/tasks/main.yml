@@ -1,16 +1,13 @@
 ---
-- name: Copy Artifact to ubuntu
-  become: true
-  copy:
+- name: Unzip archive files to ubuntu folder
+  unarchive:
     src: /root/project/artifact.tar.gz
-    dest: /home/ubuntu/artifact.tar.gz
+    dest: /home/ubuntu/
 
 - name: Extract Artifact from ubuntu and start app
   become: true
   shell: |
-    cd /home/ubuntu/
-    tar xzvf artifact.tar.gz
-    cd backend
+    cd /home/ubuntu/backend
     npm install
     npm run build
     pm2 start npm -- start
