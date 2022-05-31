@@ -231,6 +231,11 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
+            apk add --no-cache nodejs
+            apk add --no-cache npm
+            apk add --no-cache curl
+            pip install awscli
+
       - attach_workspace:
           at: ~/
       - run:
