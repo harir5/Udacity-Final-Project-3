@@ -175,10 +175,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm cache clean -force
-            npm i typescript
             npm install
-            npm audit fix --force
             npm run migrations >> migrations_dump.txt
       - run:
           name: Send migration results to kvdb io
