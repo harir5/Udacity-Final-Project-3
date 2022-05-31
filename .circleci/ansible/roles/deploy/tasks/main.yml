@@ -4,7 +4,7 @@
     src: /root/project/artifact.tar.gz
     dest: /home/ubuntu/
 
-- name: Extract Artifact from ubuntu and start app
+- name: Start the app
   become: true
   shell: |
     cd /home/ubuntu/backend

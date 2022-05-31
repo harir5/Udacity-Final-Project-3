@@ -9,6 +9,21 @@ commands:
           command: |
             aws cloudformation delete-stack --stack-name udacity-project-3-backend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udacity-project-3-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+  revert-migrations:
+    description: evert the last migration.
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+             SUCCESS=$(curl --insecure  https://kvdb.io/Dyv7U1kyD5sFjvcoMyvmem/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
+             if (( $SUCCESS == 1 ));
+             then
+                cd ~/project/backend
+                npm install
+                npm run migration:revert
+             fi
+  
 jobs:
   print_hello:
     docker:
@@ -298,6 +313,27 @@ jobs:
             else
               return 1
             fi
+      - revert-migrations
+      - destroy-environment
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install tar utility
+          command: |
+            yum install -y tar gzip
+      - run:
+          name: CloudFront Deployment Update
+          command: |
+            aws cloudformation deploy \
+                    --template-file .circleci/files/cloudfront.yml \
+                    --stack-name InitialStack \
+                    --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+                    --tags project=udapeople
+      - destroy-environment
+  
 workflows:
   default:
     jobs:
@@ -324,3 +360,5 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-frontend, deploy-backend]
+      - cloudfront-update:
+          requires: [smoke-test]
