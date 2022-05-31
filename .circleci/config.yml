@@ -201,14 +201,14 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP = $( aws ec2 describe-instances \
+            export BACKEND_IP=$(aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
             echo "${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
-            cat frontend/.env
+            echo API_URL="http://${BACKEND_IP}:3030" >> .env
+            cat .env
       - run:
           name: Deploy frontend objects
           command: |
