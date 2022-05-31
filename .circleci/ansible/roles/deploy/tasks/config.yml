@@ -23,7 +23,9 @@
     global: yes
     production: yes
     state: present
-    
+- name:"Print artifact"
+  shell: |
+     echo "artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz"
 - name:"Unzip backend files"
   unarchive:
     src: artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz

@@ -241,10 +241,13 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            echo "$PWD"
             cd backend
+            echo "$PWD"
             npm i
             npm run build
             cd ..
+            echo "$PWD"
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
